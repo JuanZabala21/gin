@@ -2,9 +2,13 @@ package main
 
 import (
 	"gin-project/controllers"
+	"gin-project/middlewares"
 	"gin-project/services"
+	"io"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	gindump "github.com/tpkeeper/gin-dump"
 )
 
 var (
@@ -12,8 +16,18 @@ var (
 	VideoController controllers.VideoController = controllers.New(VideoService)
 )
 
+func setupLogOutPut() {
+	f, _ := os.Create("gin.log")
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+}
+
 func main() {
-	server := gin.Default()
+
+	setupLogOutPut()
+
+	server := gin.New()
+
+	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth(), gindump.Dump())
 
 	/* Endpoints */
 	server.GET("/videos", func(ctx *gin.Context) {
