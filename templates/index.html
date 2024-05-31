@@ -1,0 +1,12 @@
+{{ template "header.html" }}
+
+<div class="container">
+    {{range .videos}}
+    <div class="video">
+        <h2>{{.Title}}</h2>
+        <iframe width="300" height="300" src="{{.URL}}" allowfullscreen></iframe>
+    </div>
+    {{end}}
+</div>
+
+{{ template "footer.html" }}
