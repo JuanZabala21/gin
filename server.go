@@ -35,7 +35,7 @@ func main() {
 
 	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth())
 
-	apiRoutes := server.Group("/api")
+	apiRoutes := server.Group("/api", middlewares.BasicAuth())
 	{
 		/* Endpoints */
 		apiRoutes.GET(routeVideos, func(ctx *gin.Context) {
@@ -56,5 +56,10 @@ func main() {
 		viewRoutes.GET(routeVideos, VideoController.ShowAll)
 	}
 
-	server.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+
+	server.Run(":" + port)
 }
