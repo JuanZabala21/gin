@@ -12,8 +12,12 @@ import (
 )
 
 var (
-	VideoService    services.VideoService       = services.New()
-	VideoController controllers.VideoController = controllers.New(VideoService)
+	VideoService services.VideoService = services.New()
+	loginService services.LoginService = services.NewLoginService()
+	jwtService   services.JWTServices  = services.NewJWTService()
+
+	videoController controllers.VideoController = controllers.New(VideoService)
+	loginController controllers.LoginController = controllers.NewLoginController(loginService, jwtService)
 )
 
 func setupLogOutPut() {
@@ -33,16 +37,33 @@ func main() {
 
 	server.LoadHTMLGlob("templates/*.html")
 
-	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth())
+	server.Use(gin.Recovery(), middlewares.Logger())
 
-	apiRoutes := server.Group("/api", middlewares.BasicAuth())
+	server.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "The Application is Up!",
+		})
+	})
+
+	server.POST("/login", func(ctx *gin.Context) {
+		token := loginController.Login(ctx)
+		if token != "" {
+			ctx.JSON(http.StatusOK, gin.H{
+				"token": token,
+			})
+		} else {
+			ctx.JSON(http.StatusUnauthorized, nil)
+		}
+	})
+
+	apiRoutes := server.Group("/api", middlewares.AuthorizeJWT())
 	{
 		/* Endpoints */
 		apiRoutes.GET(routeVideos, func(ctx *gin.Context) {
-			ctx.JSON(200, VideoController.FindAll())
+			ctx.JSON(200, videoController.FindAll())
 		})
 		apiRoutes.POST(routeVideos, func(ctx *gin.Context) {
-			if err := VideoController.Save(ctx); err != nil {
+			if err := videoController.Save(ctx); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			} else {
 				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
@@ -53,7 +74,7 @@ func main() {
 
 	viewRoutes := server.Group("/view")
 	{
-		viewRoutes.GET(routeVideos, VideoController.ShowAll)
+		viewRoutes.GET(routeVideos, videoController.ShowAll)
 	}
 
 	port := os.Getenv("PORT")
