@@ -3,6 +3,7 @@ package main
 import (
 	"gin-project/controllers"
 	"gin-project/middlewares"
+	"gin-project/repository"
 	"gin-project/services"
 	"io"
 	"net/http"
@@ -12,9 +13,10 @@ import (
 )
 
 var (
-	VideoService services.VideoService = services.New()
-	loginService services.LoginService = services.NewLoginService()
-	jwtService   services.JWTServices  = services.NewJWTService()
+	VideoRepository repository.VideoRepository = repository.NewVideoRepository()
+	VideoService    services.VideoService      = services.New(VideoRepository)
+	loginService    services.LoginService      = services.NewLoginService()
+	jwtService      services.JWTServices       = services.NewJWTService()
 
 	videoController controllers.VideoController = controllers.New(VideoService)
 	loginController controllers.LoginController = controllers.NewLoginController(loginService, jwtService)
@@ -26,6 +28,7 @@ func setupLogOutPut() {
 }
 
 func main() {
+	defer VideoRepository.CloseDB()
 
 	var routeVideos string = "/videos"
 
@@ -64,6 +67,20 @@ func main() {
 		})
 		apiRoutes.POST(routeVideos, func(ctx *gin.Context) {
 			if err := videoController.Save(ctx); err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
+			}
+		})
+		apiRoutes.PUT(routeVideos+"/:id", func(ctx *gin.Context) {
+			if err := videoController.Update(ctx); err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
+			}
+		})
+		apiRoutes.DELETE(routeVideos+"/:id", func(ctx *gin.Context) {
+			if err := videoController.Delete(ctx); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			} else {
 				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
