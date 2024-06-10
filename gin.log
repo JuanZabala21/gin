@@ -10,11 +10,15 @@
 	- header.html
 	- index.html
 
-[GIN-debug] POST   /login                    --> main.main.func1 (3 handlers)
-[GIN-debug] GET    /api/videos               --> main.main.func2 (4 handlers)
-[GIN-debug] POST   /api/videos               --> main.main.func3 (4 handlers)
+[GIN-debug] GET    /health                   --> main.main.func1 (3 handlers)
+[GIN-debug] POST   /login                    --> main.main.func2 (3 handlers)
+[GIN-debug] GET    /api/videos               --> main.main.func3 (4 handlers)
+[GIN-debug] POST   /api/videos               --> main.main.func4 (4 handlers)
+[GIN-debug] PUT    /api/videos/:id           --> main.main.func5 (4 handlers)
+[GIN-debug] DELETE /api/videos/:id           --> main.main.func6 (4 handlers)
 [GIN-debug] GET    /view/videos              --> gin-project/controllers.VideoController.ShowAll-fm (3 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :5000
-::1 - [04 Jun 24 16:12 -04] POST /login 200 806.9µs 
+::1 - [09 Jun 24 21:07 -04] POST /login 200 507.7µs 
+::1 - [09 Jun 24 21:08 -04] POST /api/videos 200 9.6635ms 
