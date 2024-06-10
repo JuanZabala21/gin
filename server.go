@@ -69,21 +69,21 @@ func main() {
 			if err := videoController.Save(ctx); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			} else {
-				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Saved!"})
 			}
 		})
 		apiRoutes.PUT(routeVideos+"/:id", func(ctx *gin.Context) {
 			if err := videoController.Update(ctx); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			} else {
-				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Updated!"})
 			}
 		})
 		apiRoutes.DELETE(routeVideos+"/:id", func(ctx *gin.Context) {
 			if err := videoController.Delete(ctx); err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			} else {
-				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Valid!"})
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video is Deleted!"})
 			}
 		})
 		/************/
