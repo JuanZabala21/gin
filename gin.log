@@ -1,24 +1,11 @@
-[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
- - using env:	export GIN_MODE=release
- - using code:	gin.SetMode(gin.ReleaseMode)
-
-[GIN-debug] GET    /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (1 handlers)
-[GIN-debug] HEAD   /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (1 handlers)
-[GIN-debug] Loaded HTML Templates (4): 
-	- 
-	- footer.html
-	- header.html
-	- index.html
-
-[GIN-debug] GET    /health                   --> main.main.func1 (3 handlers)
-[GIN-debug] POST   /login                    --> main.main.func2 (3 handlers)
-[GIN-debug] GET    /api/videos               --> main.main.func3 (4 handlers)
-[GIN-debug] POST   /api/videos               --> main.main.func4 (4 handlers)
-[GIN-debug] PUT    /api/videos/:id           --> main.main.func5 (4 handlers)
-[GIN-debug] DELETE /api/videos/:id           --> main.main.func6 (4 handlers)
+[GIN-debug] GET    /health                   --> gin-project/api.(*VideoApi).Authenticate-fm (3 handlers)
+[GIN-debug] POST   /api/v1/login/token       --> gin-project/api.(*VideoApi).Authenticate-fm (3 handlers)
+[GIN-debug] GET    /api/v1/videos            --> gin-project/api.(*VideoApi).GetVideos-fm (3 handlers)
+[GIN-debug] POST   /api/v1/videos            --> gin-project/api.(*VideoApi).CreateVideo-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/videos/:id        --> gin-project/api.(*VideoApi).UpdateVideo-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/videos/:id        --> gin-project/api.(*VideoApi).DeleteVideo-fm (3 handlers)
 [GIN-debug] GET    /view/videos              --> gin-project/controllers.VideoController.ShowAll-fm (3 handlers)
+[GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :5000
-::1 - [09 Jun 24 21:07 -04] POST /login 200 507.7µs 
-::1 - [09 Jun 24 21:08 -04] POST /api/videos 200 9.6635ms 
